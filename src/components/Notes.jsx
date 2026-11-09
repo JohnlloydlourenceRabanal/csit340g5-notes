@@ -3,7 +3,7 @@ import NoteCard from './NoteCard.jsx'
 
 function Notes() {
   const [form, setForm] = useState({ title: '', body: '' })
-  const [notes] = useState([
+  const [notes, setNotes] = useState([
     {
       id: 1,
       title: 'Review map and filter',
@@ -18,6 +18,22 @@ function Notes() {
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value })
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault()
+    const trimmedTitle = form.title.trim()
+    const trimmedBody = form.body.trim()
+    if (trimmedTitle === '' || trimmedBody === '') {
+      return
+    }
+    const newNote = {
+      id: crypto.randomUUID(),
+      title: trimmedTitle,
+      body: trimmedBody,
+    }
+    setNotes([...notes, newNote])
+    setForm({ title: '', body: '' })
   }
 
   return (
@@ -35,7 +51,7 @@ function Notes() {
           />
         </div>
 
-        <form className="grid gap-3">
+        <form onSubmit={handleSubmit} className="grid gap-3">
           <p className="text-[13px] font-normal tracking-wide text-[#949494]">NEW NOTE</p>
           <input
             name="title"
