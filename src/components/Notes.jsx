@@ -16,7 +16,10 @@ const startingNotes = [
 
 function Notes() {
   const [search, setSearch] = useState('')
-  const [form, setForm] = useState({ title: '', body: '' })
+  const [form, setForm] = useState(() => {
+    const saved = localStorage.getItem('draft')
+    return saved ? JSON.parse(saved) : { title: '', body: '' }
+  })
   const [notes, setNotes] = useState(() => {
     const saved = localStorage.getItem('notes')
     return saved ? JSON.parse(saved) : startingNotes
